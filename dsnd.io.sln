@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dsnd.io", "dsnd.io\dsnd.io.csproj", "{215246AB-F2FA-4BBE-939A-97CEAF497C9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{215246AB-F2FA-4BBE-939A-97CEAF497C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{215246AB-F2FA-4BBE-939A-97CEAF497C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{215246AB-F2FA-4BBE-939A-97CEAF497C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{215246AB-F2FA-4BBE-939A-97CEAF497C9F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D3238EC2-A05A-48D0-BC25-328CCFB17760}
+	EndGlobalSection
+EndGlobal

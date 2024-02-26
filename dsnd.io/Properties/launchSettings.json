@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "dsnd.io": {
+      "commandName": "Project",
+      "commandLineArgs": "files\\*"
+    }
+  }
+}
