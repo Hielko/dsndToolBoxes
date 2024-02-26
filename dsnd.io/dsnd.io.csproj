@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,18 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="dsnd">
-      <HintPath>..\..\dsndTool\bin\Debug\net6.0\dsnd.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Files\dd_SNRE_571_Gaynor.dsnd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Files\Down-Beat-Kick.dsnd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="dll\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="dsnd">
+      <HintPath>dll\dsnd.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
