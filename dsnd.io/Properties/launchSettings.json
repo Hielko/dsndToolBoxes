@@ -2,7 +2,7 @@
   "profiles": {
     "dsnd.io": {
       "commandName": "Project",
-      "commandLineArgs": "\"s:\\drumittests\\20240222\\Kick\\Attack 20 Kick.dsnd\" -t 2 -r"
+      "commandLineArgs": "\"s:\\drumittests\\20240222\\*.*\" -r -o"
     }
   }
 }
