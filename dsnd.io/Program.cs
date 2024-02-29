@@ -2,13 +2,13 @@
 
 Console.WriteLine("Export DSND file(s)");
 
+
 if (args.Length > 0)
 {
     var currentDirectory = Directory.GetCurrentDirectory();
     var argOptions = new GetOpt(args);
-    var recurseSubdirectories = argOptions.ExistValue("-r");
-    var overwriteExistingFiles = argOptions.ExistValue("-o");
-
+    var recurseSubdirectories = argOptions.TagExist("-r");
+    DSNDOptions.OverwriteExistingFiles = argOptions.TagExist("-o");
     int tasks = 1;
     if (argOptions.TryGetValue("-t", out var tasksStr))
     {
@@ -63,7 +63,7 @@ if (args.Length > 0)
         if (!fi.Exists)
         {
             Console.WriteLine($"{filename} does not exists.");
-        }
+        } else
         if (fi.Extension.ToLower() == ".dsnd")
         {
             // Strip drive
@@ -83,8 +83,7 @@ if (args.Length > 0)
 
             Console.WriteLine($"Exporting {filename} to {path}");
 
-
-            new Export().ExportSamples(path, dsndSound, overwriteExistingFiles);
+            new Export().ExportSamples(path, dsndSound);
         }
     });
 

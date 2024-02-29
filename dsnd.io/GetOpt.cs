@@ -1,6 +1,4 @@
-﻿using System.Formats.Asn1;
-
-namespace DSND
+﻿namespace DSND
 {
     public class GetOpt
     {
@@ -11,17 +9,9 @@ namespace DSND
             this.args = args;
         }
 
+        public string? FindTag(string tag) => args.FirstOrDefault(x => x == tag);
 
-        public bool ExistValue(string tag)
-        {
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i] == tag) return true;
-
-            }
-            return false;
-        }
-
+        public bool TagExist(string tag) => FindTag(tag) != null;
 
         public bool TryGetValue(string tag, out string? value)
         {
