@@ -26,7 +26,7 @@ if (args.Length == 0)
     Console.WriteLine($"          {CliOptions.GenerateTag_g} generates dsnd file(s)");
 
     Console.WriteLine($"          {CliOptions.TasksTag_t} <n> where n is number of max threads, minimal 2 when present");
-    Console.WriteLine($"          {CliOptions.RecurseTag_r} recursive");
+    Console.WriteLine($"          {CliOptions.RecursiveTag_r} recursive");
     Console.WriteLine($"          {CliOptions.OverwriteTag_o} overwrite existing files");
     Console.WriteLine($"          {CliOptions.ExportPathTag_p} \"export directory\"");
     return;

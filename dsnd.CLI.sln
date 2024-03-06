@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dsnd.CLI", "dsnd.io\Dsnd.CLI.csproj", "{215246AB-F2FA-4BBE-939A-97CEAF497C9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dsnd.CLI", "dsnd.CLI\Dsnd.CLI.csproj", "{215246AB-F2FA-4BBE-939A-97CEAF497C9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

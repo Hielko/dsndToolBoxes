@@ -8,7 +8,7 @@ namespace Dsnd.CLI
         public static void DoExport(string[] args, GetOptions argOptions)
         {
             var currentDirectory = Directory.GetCurrentDirectory();
-            var recurseSubdirectories = argOptions.TagExist(CliOptions.RecurseTag_r);
+            var recurseSubdirectories = argOptions.TagExist(CliOptions.RecursiveTag_r);
             int tasks = CliOptions.GetTasks(argOptions);
 
             DirectoryInfo exportDirectory = null;

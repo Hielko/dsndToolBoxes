@@ -8,7 +8,7 @@ namespace Dsnd.CLI
         public static string GenerateTag_g = "-g";
         public static string OverwriteTag_o = "-o";
         public static string TasksTag_t = "-t";
-        public static string RecurseTag_r = "-r";
+        public static string RecursiveTag_r = "-r";
         public static string ExportPathTag_p = "-p";
 
         public static int GetTasks(GetOptions options)
