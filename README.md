@@ -1,4 +1,4 @@
-Project for reading the 2box .dsnd files and extract the samples from it,
+Project for reading the 2box/drumit 3 or 5 .dsnd files and extract the samples from it,
 and generating .dsnd from samples.
 
 **Generate dsnd files:**
