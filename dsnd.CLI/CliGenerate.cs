@@ -46,10 +46,6 @@ namespace Dsnd.CLI
             {
                 exportDirectory = new DirectoryInfo(exportPathTag);
             }
-            else
-            {
-                exportDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
-            }
 
             var files = Directory.EnumerateFiles(importDirectory.FullName, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
             var fileinfos = files.Select(f => new FileInfo(f)).ToList();
@@ -63,19 +59,28 @@ namespace Dsnd.CLI
 
                 if (directories.Any())
                 {
-                    var dsnd = new NewDsnd(dsndName);
+                    var dsndSound = new NewDsnd(dsndName);
                     foreach (var directory in directories)
                     {
-                        var zone = dsnd.AddZone(directory);
+                        var zone = dsndSound.AddZone(directory);
                         files = Directory.EnumerateFiles(directory, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
-                        foreach (var f in files)
+                        if (files.Any())
                         {
-                            dsnd.AddLayer(zone, new FileInfo(f));
+                            var first = new FileInfo(files.ToArray()[0]);
+                            string zoneName = first.DirectoryName.Substring(first.DirectoryName.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                            zone.Name = zoneName;
+                            foreach (var f in files)
+                            {
+                                dsndSound.AddLayer(zone, new FileInfo(f));
+                            }
                         }
                     }
 
                     string dndDirectory = exportDirectory != null ? exportDirectory.FullName : rootDir;
-                    dsnd.Save(new FileInfo($"{dndDirectory}{Path.DirectorySeparatorChar}{dsndName}.dsnd"));
+                    Directory.CreateDirectory(dndDirectory);
+                    var dsndFilename = $"{dndDirectory}{Path.DirectorySeparatorChar}{dsndName}.dsnd";
+                    Console.WriteLine($"Writing {dsndFilename}");
+                    dsndSound.Save(new FileInfo(dsndFilename));
                 }
 
             }
