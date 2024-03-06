@@ -2,7 +2,7 @@
   "profiles": {
     "dsnd.io": {
       "commandName": "Project",
-      "commandLineArgs": "\"s:\\drumittests\\20240222\\*.*\" -r -o"
+      "commandLineArgs": "-g \"s:\\split\""
     }
   }
 }

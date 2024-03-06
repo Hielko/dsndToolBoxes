@@ -1,4 +1,4 @@
-﻿namespace DSND
+﻿namespace Utils
 {
     public class GetOpt
     {
