@@ -1,22 +1,21 @@
 ﻿using Utils;
 
-namespace DsndCLI
+namespace Dsnd.CLI
 {
     internal class CliOptions
     {
-        public static string ExportTag = "-e";
-        public static string GenerateTag = "-g";
-        public static string TaksTag = "-t";
-        public static string OverwriteTag = "-o";
-        public static string TasksTag = "-t";
-        public static string RecurseTag = "-r";
-        public static string ExportPathTag = "-p";
+        public static string ExportTag_e = "-e";
+        public static string GenerateTag_g = "-g";
+        public static string OverwriteTag_o = "-o";
+        public static string TasksTag_t = "-t";
+        public static string RecurseTag_r = "-r";
+        public static string ExportPathTag_p = "-p";
 
-        public static int GetTasks(GetOpt options)
+        public static int GetTasks(GetOptions options)
         {
             int tasks = 1;
 
-            if (options.TryGetValue(TasksTag, out var tasksStr))
+            if (options.TryGetValue(TasksTag_t, out var tasksStr))
             {
                 if (int.TryParse(tasksStr, out tasks))
                 {

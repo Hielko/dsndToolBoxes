@@ -1,10 +1,10 @@
 ﻿namespace Utils
 {
-    public class GetOpt
+    public class GetOptions
     {
         readonly string[] args;
 
-        public GetOpt(string[] args)
+        public GetOptions(string[] args)
         {
             this.args = args;
         }

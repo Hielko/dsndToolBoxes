@@ -1,18 +1,18 @@
 ﻿using Utils;
 using DSND;
 
-namespace DsndCLI
+namespace Dsnd.CLI
 {
     internal class CliExport
     {
-        public void DoExport(string[] args, GetOpt argOptions)
+        public static void DoExport(string[] args, GetOptions argOptions)
         {
             var currentDirectory = Directory.GetCurrentDirectory();
-            var recurseSubdirectories = argOptions.TagExist(CliOptions.RecurseTag);
+            var recurseSubdirectories = argOptions.TagExist(CliOptions.RecurseTag_r);
             int tasks = CliOptions.GetTasks(argOptions);
 
             DirectoryInfo exportDirectory = null;
-            if (argOptions.TryGetValue(CliOptions.ExportPathTag, out var exportDirectoryStr))
+            if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportDirectoryStr))
             {
                 exportDirectory = new DirectoryInfo(exportDirectoryStr);
             }
@@ -44,7 +44,7 @@ namespace DsndCLI
                 files = new List<string>() { arg0 };
             }
 
-            Console.WriteLine($"Files: {files.Count()}");
+            Console.WriteLine($"Number of files: {files.Count()}");
 
             Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = tasks }, filename =>
             {
