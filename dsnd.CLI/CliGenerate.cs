@@ -1,6 +1,5 @@
 ﻿using dsnd.Models;
 using DSND;
-using System.IO;
 using Utils;
 using static DSND.Constants;
 
@@ -118,7 +117,7 @@ namespace Dsnd.CLI
                             {
                                 var fi = new FileInfo(f);
                                 var velocitySet = velocityMap.Velocities.Where(ve => ve.Filename.ToLower() == fi.Name.ToLower()).FirstOrDefault();
-                                dsndSound.AddLayer(zone, fi, velocitySet != null ? velocitySet.Velocity : -1);
+                                dsndSound.AddLayer(zone, fi, velocitySet != null ? velocitySet.Velocity  - 360 + 512   : -1);
                             }
                         }
                     }
