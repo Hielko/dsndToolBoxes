@@ -35,7 +35,7 @@ namespace Dsnd.CLI
             return dirWithOutWavs;
         }
 
-        public static bool TryParseZoneInfo(string directoryName, out int zoneNr, out string zoneName)
+        static bool TryParseZoneInfo(string directoryName, out int zoneNr, out string zoneName)
         {
             zoneNr = -1;
             zoneName = string.Empty;
@@ -94,32 +94,25 @@ namespace Dsnd.CLI
 
                     foreach (var directory in directories)
                     {
-                        VelocityMap velocityMap = new();
-                        string velocities = Path.Combine(directory, Velocities.VelocitiesMapFilename);
-                        if (File.Exists(velocities))
-                        {
-                            velocityMap.Parse(File.ReadAllLines(velocities));
-                        }
+                        string velocityFilename = Path.Combine(directory, Velocities.VelocitiesMapFilename);
+                        VelocityMap velocityMap = new(velocityFilename);
 
-                        string LastPartDirectory = directory.Substring(directory.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-                        
-                        if (!TryParseZoneInfo(LastPartDirectory, out zoneNr, out var zoneName))
+                        string lastPartDirectory = directory.Substring(directory.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
+                        if (!TryParseZoneInfo(lastPartDirectory, out zoneNr, out var zoneName))
                         {
-                            zoneName = LastPartDirectory;
+                            zoneName = lastPartDirectory;
                             zoneNr++;
                         }
 
                         var zone = dsndSound.AddZone(zoneName, zoneNr);
                         files = Directory.EnumerateFiles(directory, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
-                        if (files.Any())
+                        foreach (var f in files)
                         {
-                            foreach (var f in files)
-                            {
-                                var fi = new FileInfo(f);
-                                var velocitySet = velocityMap.Velocities.Where(ve => ve.Filename.ToLower() == fi.Name.ToLower()).FirstOrDefault();
-                                dsndSound.AddLayer(zone, fi, velocitySet != null ? velocitySet.Velocity  - 360 + 512   : -1);
-                            }
+                            var fi = new FileInfo(f);
+                            dsndSound.AddLayer(zone, fi, velocityMap);
                         }
+
                     }
 
                     string dndDirectory = exportDirectory != null ? exportDirectory.FullName : rootDir;
