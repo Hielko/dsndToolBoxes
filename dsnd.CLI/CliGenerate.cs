@@ -1,7 +1,6 @@
 ﻿using dsnd.Models;
-using DSND;
 using Utils;
-using static DSND.Constants;
+using static Dsnd.Constants;
 
 namespace Dsnd.CLI
 {
@@ -110,7 +109,7 @@ namespace Dsnd.CLI
                         foreach (var f in files)
                         {
                             var fi = new FileInfo(f);
-                            dsndSound.AddLayer(zone, fi, velocityMap);
+                            dsndSound.AddLayer(zone, fi, velocityMap.FindVelocity(fi));
                         }
 
                     }

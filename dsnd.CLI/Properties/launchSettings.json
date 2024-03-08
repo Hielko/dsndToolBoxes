@@ -2,7 +2,7 @@
   "profiles": {
     "dsnd.io": {
       "commandName": "Project",
-      "commandLineArgs": "-g \"d:\\samples\" -o"
+      "commandLineArgs": "-g \"s:\\split\\EU 14 SCF HiHat\" -o"
     }
   }
 }

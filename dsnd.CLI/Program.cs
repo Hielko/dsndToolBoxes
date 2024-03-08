@@ -1,4 +1,4 @@
-﻿using DSND;
+﻿using Dsnd;
 using Dsnd.CLI;
 using Utils;
 

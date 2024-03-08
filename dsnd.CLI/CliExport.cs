@@ -1,5 +1,4 @@
 ﻿using Utils;
-using DSND;
 
 namespace Dsnd.CLI
 {
@@ -11,7 +10,7 @@ namespace Dsnd.CLI
             var recurseSubdirectories = argOptions.TagExist(CliOptions.RecursiveTag_r);
             int tasks = CliOptions.GetTasks(argOptions);
 
-            DirectoryInfo exportDirectory = null;
+            DirectoryInfo exportDirectory;
             if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportDirectoryStr))
             {
                 exportDirectory = new DirectoryInfo(exportDirectoryStr);
@@ -70,7 +69,9 @@ namespace Dsnd.CLI
                     var pathstr = fi.DirectoryName;
                     var p = pathstr.LastIndexOf(Path.DirectorySeparatorChar);
                     pathstr = p > 0 ? pathstr.Substring(p + 1) : pathstr;
-                    var path = new DirectoryInfo(exportDirectory.FullName + tmp + Path.DirectorySeparatorChar + pathstr + "_Export");
+                    //var path = new DirectoryInfo(exportDirectory.FullName + tmp + Path.DirectorySeparatorChar + pathstr + "_Export");
+
+                    var path = new DirectoryInfo(Path.Combine(exportDirectory.FullName + tmp, pathstr + "_Export"));
 
                     Console.WriteLine($"Exporting {filename} to {path}");
 
