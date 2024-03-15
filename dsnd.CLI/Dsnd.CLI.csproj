@@ -14,12 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="dll\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="dsnd">
-      <HintPath>dll\dsnd.dll</HintPath>
+      <HintPath>..\..\dsndTool\dsndLibrary\bin\Release\net6.0\dsnd.dll</HintPath>
     </Reference>
   </ItemGroup>
 

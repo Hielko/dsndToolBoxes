@@ -1,4 +1,5 @@
 ﻿using Utils;
+using Dsnd.Riff;
 
 namespace Dsnd.CLI
 {
@@ -63,7 +64,9 @@ namespace Dsnd.CLI
                         tmp = tmp.Remove(0, 1);
                     }
 
-                    var dsndSound = new RiffParser().ParseDsndFile(fi);
+
+                    var dsndSound = new ParseRiff().ParseDsndFile(fi);
+
                     Console.WriteLine($"Exporting {filename}");
 
                     var pathstr = fi.DirectoryName;
@@ -75,7 +78,7 @@ namespace Dsnd.CLI
 
                     Console.WriteLine($"Exporting {filename} to {path}");
 
-                    new Export().ExportSamples(path, dsndSound);
+                    new ExportRiff().ExportSamples(path, dsndSound);
                 }
             });
 
