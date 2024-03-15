@@ -5,8 +5,6 @@ VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dsnd.CLI", "dsnd.CLI\Dsnd.CLI.csproj", "{215246AB-F2FA-4BBE-939A-97CEAF497C9F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dll", "dll", "{30059FEA-8E97-4FF6-B3F8-8A4F25F4EDEA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA1D7093-75E8-48FF-9EE4-A0E06217548F}"
 	ProjectSection(SolutionItems) = preProject
 		..\dsndLibrary\dll\dsnd.dll = ..\dsndLibrary\dll\dsnd.dll
