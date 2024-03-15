@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dsnd.CLI", "dsnd.CLI\Dsnd.CLI.csproj", "{215246AB-F2FA-4BBE-939A-97CEAF497C9F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dll", "dll", "{30059FEA-8E97-4FF6-B3F8-8A4F25F4EDEA}"
+	ProjectSection(SolutionItems) = preProject
+		..\dsndTool\dll\dsnd.dll = ..\dsndTool\dll\dsnd.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

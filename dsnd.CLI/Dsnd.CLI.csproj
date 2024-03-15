@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <Reference Include="dsnd">
-      <HintPath>..\..\dsndTool\dsndLibrary\bin\Release\net6.0\dsnd.dll</HintPath>
+      <HintPath>..\..\dsndTool\dll\dsnd.dll</HintPath>
     </Reference>
   </ItemGroup>
 
