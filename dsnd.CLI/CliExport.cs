@@ -1,5 +1,5 @@
-﻿using Utils;
-using Dsnd.Riff;
+﻿using Dsnd.CLI.Utils;
+using Dsnd.Core.Riff;
 
 namespace Dsnd.CLI
 {

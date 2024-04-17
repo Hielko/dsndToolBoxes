@@ -1,6 +1,6 @@
-﻿using dsnd.Models;
-using Dsnd.Riff;
-using Utils;
+﻿using Dsnd.Core.Models;
+using Dsnd.Core.Riff;
+using Dsnd.CLI.Utils;
 using static Dsnd.Constants;
 
 namespace Dsnd.CLI

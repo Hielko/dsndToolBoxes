@@ -1,6 +1,6 @@
 ﻿using Dsnd;
 using Dsnd.CLI;
-using Utils;
+using Dsnd.CLI.Utils;
 
 var argOptions = new GetOptions(args);
 DsndOptions.OverwriteExistingFiles = argOptions.TagExist(CliOptions.OverwriteTag_o);

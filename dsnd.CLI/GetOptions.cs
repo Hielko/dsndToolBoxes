@@ -1,4 +1,4 @@
-﻿namespace Utils
+﻿namespace Dsnd.CLI.Utils
 {
     public class GetOptions
     {
