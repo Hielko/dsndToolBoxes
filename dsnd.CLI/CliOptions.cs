@@ -1,4 +1,4 @@
-﻿using Utils;
+﻿using Dsnd.CLI.Utils;
 
 namespace Dsnd.CLI
 {
