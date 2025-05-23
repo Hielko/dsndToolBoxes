@@ -1,4 +1,4 @@
-﻿namespace Dsnd.CLI.Utils
+﻿namespace Dsnd.CLI
 {
     public class GetOptions
     {
@@ -20,7 +20,7 @@
             {
                 if (args[i] == tag && i + 1 < args.Length)
                 {
-                    if (!String.IsNullOrEmpty(args[i + 1]))
+                    if (!string.IsNullOrEmpty(args[i + 1]))
                     {
                         value = args[i + 1];
                         return true;

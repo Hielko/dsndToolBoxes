@@ -1,6 +1,4 @@
-﻿using Dsnd.Core.Models;
-using Dsnd.Core.Riff;
-using Dsnd.CLI.Utils;
+﻿using Dsnd.Core.Riff;
 using static Dsnd.Constants;
 
 namespace Dsnd.CLI
@@ -10,16 +8,16 @@ namespace Dsnd.CLI
     /// </summary>
     internal class CliGenerate
     {
-        static string[] SplitDir(string? name)
+        static string[]? SplitDir(string? name)
         {
-            string[] split = name.Split(Path.DirectorySeparatorChar);
+            string[] split = name?.Split(Path.DirectorySeparatorChar);
             return split;
         }
 
-        static string FindRootOfSamples(FileInfo fileInfo)
+        static string? FindRootOfSamples(FileInfo fileInfo)
         {
             var directoryParts = SplitDir(fileInfo.DirectoryName);
-            string dirWithOutWavs = null;
+            string? dirWithOutWavs = null;
 
             for (int i = directoryParts.Length; i > 1; i--)
             {
@@ -61,8 +59,8 @@ namespace Dsnd.CLI
 
         public static void DoGenerate(string[] args, GetOptions argOptions)
         {
-            DirectoryInfo importDirectory = null;
-            DirectoryInfo exportDirectory = null;
+            DirectoryInfo? importDirectory = null;
+            DirectoryInfo? exportDirectory = null;
 
             if (argOptions.TryGetValue(CliOptions.GenerateTag_g, out var str))
             {

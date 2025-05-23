@@ -1,5 +1,4 @@
-﻿using Dsnd.CLI.Utils;
-using Dsnd.Core.Riff;
+﻿using Dsnd.Core.Riff;
 
 namespace Dsnd.CLI
 {
@@ -55,30 +54,27 @@ namespace Dsnd.CLI
                     Console.WriteLine($"{filename} does not exists.");
                 }
                 else
-                if (fi.Extension.ToLower() == ".dsnd")
                 {
-                    // Strip drive
-                    var tmp = fi.DirectoryName;
-                    while (tmp[0] != Path.DirectorySeparatorChar)
+                    if (fi?.Extension.ToLower() == ".dsnd")
                     {
-                        tmp = tmp.Remove(0, 1);
+                        // Strip drive
+                        var tmp = fi?.DirectoryName?.TrimStart(Path.DirectorySeparatorChar);
+
+                        var dsndSound = new ParseRiff().ParseDsndFile(fi);
+
+                        Console.WriteLine($"Exporting {filename}");
+
+                        var pathstr = fi?.DirectoryName;
+                        var p = pathstr?.LastIndexOf(Path.DirectorySeparatorChar);
+                        pathstr = p > 0 ? pathstr?.Substring((int)(p + 1)) : pathstr;
+                        //var path = new DirectoryInfo(exportDirectory.FullName + tmp + Path.DirectorySeparatorChar + pathstr + "_Export");
+
+                        var path = new DirectoryInfo(Path.Combine(exportDirectory.FullName + tmp, pathstr + "_Export"));
+
+                        Console.WriteLine($"Exporting {filename} to {path}");
+
+                        new ExportRiff().ExportSamples(path, dsndSound);
                     }
-
-
-                    var dsndSound = new ParseRiff().ParseDsndFile(fi);
-
-                    Console.WriteLine($"Exporting {filename}");
-
-                    var pathstr = fi.DirectoryName;
-                    var p = pathstr.LastIndexOf(Path.DirectorySeparatorChar);
-                    pathstr = p > 0 ? pathstr.Substring(p + 1) : pathstr;
-                    //var path = new DirectoryInfo(exportDirectory.FullName + tmp + Path.DirectorySeparatorChar + pathstr + "_Export");
-
-                    var path = new DirectoryInfo(Path.Combine(exportDirectory.FullName + tmp, pathstr + "_Export"));
-
-                    Console.WriteLine($"Exporting {filename} to {path}");
-
-                    new ExportRiff().ExportSamples(path, dsndSound);
                 }
             });
 

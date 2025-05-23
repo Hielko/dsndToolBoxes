@@ -1,6 +1,4 @@
-﻿using Dsnd.CLI.Utils;
-
-namespace Dsnd.CLI
+﻿namespace Dsnd.CLI
 {
     internal class CliOptions
     {
