@@ -6,7 +6,16 @@ namespace Dsnd.CLI
     {
         public static void DoExportToWavs(string[] args, GetOptions argOptions)
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
+            DirectoryInfo exportRootDirectory;
+            if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportDirectoryStr))
+            {
+                exportRootDirectory = new DirectoryInfo(exportDirectoryStr);
+            } else
+            {
+                throw new ArgumentException($"Export path is not set, use {CliOptions.ExportPathTag_p} to set export path");
+            }
+
+                var currentDirectory = Directory.GetCurrentDirectory();
             var recurseSubdirectories = argOptions.TagExist(CliOptions.RecursiveTag_r);
             int tasks = CliOptions.GetTasks(argOptions);
 
@@ -47,24 +56,13 @@ namespace Dsnd.CLI
                 {
                     if (fi?.Extension.ToLower() == ".dsnd")
                     {
-                        var dsndSound = new ParseRiff().ParseDsndFile(fi);
-
                         Console.WriteLine($"Exporting {filename}");
 
-                        DirectoryInfo exportRootDirectory;
+                        var dsndSound = new ParseRiff().ParseDsndFile(fi);
+                        var exportSamplesDirectory = new DirectoryInfo($"{exportRootDirectory}{Path.DirectorySeparatorChar}{dsndSound.Name}");
 
-                        if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportDirectoryStr))
-                        {
-                            exportRootDirectory = new DirectoryInfo(exportDirectoryStr);
-                        }
-                        else
-                        {
-                            exportRootDirectory = new DirectoryInfo(fi.FullName + Path.DirectorySeparatorChar+"Export"); // + Path.DirectorySeparatorChar + "Export");
-                        }
-
-                        Console.WriteLine($"Exporting {filename} to {exportRootDirectory}");
-
-                        new ExportRiff().ExportSamples(exportRootDirectory, dsndSound);
+                        Console.WriteLine($"Exporting {filename} to {exportSamplesDirectory}");
+                        new ExportRiff().ExportSamples(exportSamplesDirectory, dsndSound);
                     }
                 }
             });
