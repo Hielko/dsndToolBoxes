@@ -3,16 +3,24 @@
 var argOptions = new GetOptions(args);
 Dsnd.Core.DsndOptions.OverwriteExistingFiles = argOptions.TagExist(CliOptions.OverwriteTag_o);
 
+
+// Export dsnd to seperate wav's:
+// "s:\\dd_SNRE_571_Gaynor.dsnd" -e  -p "s:\\export_directory"
+
+// Generate dsnd:
+// -g "s:\\import_directory"
+
+
 if (argOptions.TagExist(CliOptions.ExportTag_e))
 {
-    Console.WriteLine("Export DSND file(s)");
-    CliExport.DoExport(args, argOptions);
+    Console.WriteLine("Export DSND file(s) to seperate wav's");
+    CliExport.DoExportToWavs(args, argOptions);
 }
 
 if (argOptions.TagExist(CliOptions.GenerateTag_g))
 {
     Console.WriteLine("Create DSND file(s) from wav files");
-    CliGenerate.DoGenerate(args, argOptions);
+    CliGenerate.DoGenerateDsnd(args, argOptions);
 }
 
 
@@ -26,6 +34,6 @@ if (args.Length == 0)
     Console.WriteLine($"          {CliOptions.TasksTag_t} <n> where n is number of max threads, minimal 2 when present");
     Console.WriteLine($"          {CliOptions.RecursiveTag_r} recursive");
     Console.WriteLine($"          {CliOptions.OverwriteTag_o} overwrite existing files");
-    Console.WriteLine($"          {CliOptions.ExportPathTag_p} \"export directory\"");
+    Console.WriteLine($"          {CliOptions.ExportPathTag_p} \"export root directory\"");
     return;
 }
