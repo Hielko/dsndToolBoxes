@@ -4,21 +4,11 @@ namespace Dsnd.CLI
 {
     internal class CliExport
     {
-        public static void DoExport(string[] args, GetOptions argOptions)
+        public static void DoExportToWavs(string[] args, GetOptions argOptions)
         {
             var currentDirectory = Directory.GetCurrentDirectory();
             var recurseSubdirectories = argOptions.TagExist(CliOptions.RecursiveTag_r);
             int tasks = CliOptions.GetTasks(argOptions);
-
-            DirectoryInfo exportDirectory;
-            if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportDirectoryStr))
-            {
-                exportDirectory = new DirectoryInfo(exportDirectoryStr);
-            }
-            else
-            {
-                exportDirectory = new DirectoryInfo("Export"); // + Path.DirectorySeparatorChar + "Export");
-            }
 
             var arg0 = args[0];
             Console.WriteLine($"Directory: {arg0}");
@@ -57,23 +47,24 @@ namespace Dsnd.CLI
                 {
                     if (fi?.Extension.ToLower() == ".dsnd")
                     {
-                        // Strip drive
-                        var tmp = fi?.DirectoryName?.TrimStart(Path.DirectorySeparatorChar);
-
                         var dsndSound = new ParseRiff().ParseDsndFile(fi);
 
                         Console.WriteLine($"Exporting {filename}");
 
-                        var pathstr = fi?.DirectoryName;
-                        var p = pathstr?.LastIndexOf(Path.DirectorySeparatorChar);
-                        pathstr = p > 0 ? pathstr?.Substring((int)(p + 1)) : pathstr;
-                        //var path = new DirectoryInfo(exportDirectory.FullName + tmp + Path.DirectorySeparatorChar + pathstr + "_Export");
+                        DirectoryInfo exportRootDirectory;
 
-                        var path = new DirectoryInfo(Path.Combine(exportDirectory.FullName + tmp, pathstr + "_Export"));
+                        if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportDirectoryStr))
+                        {
+                            exportRootDirectory = new DirectoryInfo(exportDirectoryStr);
+                        }
+                        else
+                        {
+                            exportRootDirectory = new DirectoryInfo(fi.FullName + Path.DirectorySeparatorChar+"Export"); // + Path.DirectorySeparatorChar + "Export");
+                        }
 
-                        Console.WriteLine($"Exporting {filename} to {path}");
+                        Console.WriteLine($"Exporting {filename} to {exportRootDirectory}");
 
-                        new ExportRiff().ExportSamples(path, dsndSound);
+                        new ExportRiff().ExportSamples(exportRootDirectory, dsndSound);
                     }
                 }
             });

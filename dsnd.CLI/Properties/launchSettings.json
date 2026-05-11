@@ -2,7 +2,7 @@
   "profiles": {
     "dsnd.io": {
       "commandName": "Project",
-      "commandLineArgs": "\"s:\\\\dd_SNRE_571_Gaynor.dsnd\" -e  -p \"s:\\\\ff\""
+      "commandLineArgs": "\"s:\\dd_SNRE_571_Gaynor-ORGINAL\\\\dd_SNRE_571_Gaynor-ORGINAL.dsnd\" -e  -p \"s:\\\\export_directory\" -o"
     }
   }
 }
