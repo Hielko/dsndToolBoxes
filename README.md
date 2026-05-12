@@ -5,7 +5,7 @@ and generating .dsnd from samples.
 <br />
 <br />
 
-**Commandline arguments**  
+**Commandline arguments and examples**  
 <br />
 
 *Main operation:*  
@@ -13,21 +13,21 @@ and generating .dsnd from samples.
 -g generates dsnd file(s)  
 <br />
 <br />
-*Options:*  
+*Other options:*  
 -t <n> where n is number of max threads, minimal 2 when present  
 -r recursive  
 -o overwrite existing files  
--p "export root directory" (mandantory for export)  
+-p "export directory" (mandantory for export)  
 
 <br />
 <br />
 
 *Examples:*  
-Export dsnd to seperate wav's:  
+* Export dsnd to seperate wav's:  
 Dsnd.CLI.exe s:\\snares\\dd_SNRE_571_Gaynor.dsnd" -e  -p "s:\\export_directory"  
 
 
-Generate dsnd:  
+* Generate dsnd:  
 Dsnd.CLI.exe -g "s:\\import_directory"
 
 
