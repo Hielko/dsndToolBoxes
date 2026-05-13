@@ -26,8 +26,8 @@ namespace Dsnd.CLI
             for (int i = directoryParts.Length; i > 1; i--)
             {
                 var p = string.Join(Path.DirectorySeparatorChar, directoryParts.Take(i));
-                var haswavs = Directory.EnumerateFiles(p, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
-                if (!haswavs.Any())
+                var hasWaveFiles = Directory.EnumerateFiles(p, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
+                if (!hasWaveFiles.Any())
                 {
                     dirWithOutWavs = p;
                     break;
@@ -64,9 +64,9 @@ namespace Dsnd.CLI
             DirectoryInfo? importDirectory = null;
             DirectoryInfo? exportDirectory = null;
 
-            if (argOptions.TryGetValue(CliOptions.GenerateTag_g, out var str) && str != null)
+            if (argOptions.TryGetValue(CliOptions.GenerateTag_g, out var importDirectoryStr) && importDirectoryStr != null)
             {
-                importDirectory = new DirectoryInfo(str);
+                importDirectory = new DirectoryInfo(importDirectoryStr);
             }
             else
             {
@@ -78,20 +78,25 @@ namespace Dsnd.CLI
                 exportDirectory = new DirectoryInfo(exportPathTag);
             }
 
-            var wavFiles = Directory.EnumerateFiles(importDirectory.FullName, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
-            var fileinfos = wavFiles.Select(f => new FileInfo(f)).ToList();
+            var allFiles = Directory.EnumerateFiles(importDirectory.FullName, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
+            var fileinfos = allFiles.Select(f => new FileInfo(f)).ToList();
             var lookups = fileinfos.ToLookup(fi => FindRootOfSamples(fi));
 
             foreach (var lu in lookups)
             {
                 var rootDir = lu.Key;
+                if (rootDir == null)
+                {
+                    break;
+                }
+
                 var dsndName = rootDir.Substring(rootDir.LastIndexOf(Path.DirectorySeparatorChar) + 1);
                 var directories = Directory.EnumerateDirectories(rootDir, "*", new EnumerationOptions { ReturnSpecialDirectories = false, RecurseSubdirectories = true });
 
                 if (directories.Any())
                 {
                     var dsndSound = new NewDsnd(dsndName);
-                    int zoneNr = 1;
+                    int zoneCount = 1;
 
                     foreach (var directory in directories)
                     {
@@ -99,19 +104,19 @@ namespace Dsnd.CLI
                         var velocityMap = new VelocityMap(velocityFilename);
                         var lastPartDirectory = directory.Substring(directory.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
-                        if (!TryParseZoneInfo(lastPartDirectory, out zoneNr, out var zoneName))
+                        if (!TryParseZoneInfo(lastPartDirectory, out zoneCount, out var zoneName))
                         {
                             zoneName = lastPartDirectory;
-                            zoneNr++;
+                            zoneCount++;
                         }
                         else
                         {
                             Console.WriteLine($"Can't read zone number from {lastPartDirectory}");
                         }
 
-                        var zone = dsndSound.AddZone(zoneName, zoneNr);
-                        wavFiles = Directory.EnumerateFiles(directory, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
-                        foreach (var f in wavFiles)
+                        var zone = dsndSound.AddZone(zoneName, zoneCount);
+                        var waveFiles = Directory.EnumerateFiles(directory, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
+                        foreach (var f in waveFiles)
                         {
                             var fi = new FileInfo(f);
                             var velocity = velocityMap.FindVelocity(fi) ?? throw new Exception($"Can't find velocity for {fi.FullName} in {velocityFilename}");
@@ -123,9 +128,9 @@ namespace Dsnd.CLI
                     var dsndDirectory = exportDirectory != null ? exportDirectory.FullName : rootDir;
                     Directory.CreateDirectory(dsndDirectory);
 
-                    var dsndFilename = $"{dsndDirectory}{Path.DirectorySeparatorChar}{dsndName}.dsnd";
-                    Console.WriteLine($"Writing {dsndFilename}");
-                    dsndSound.Save(new FileInfo(dsndFilename));
+                    var dsndPathAndFilename = $"{dsndDirectory}{Path.DirectorySeparatorChar}{dsndName}.dsnd";
+                    Console.WriteLine($"Writing {dsndPathAndFilename}");
+                    dsndSound.Save(new FileInfo(dsndPathAndFilename));
                 }
             }
         }

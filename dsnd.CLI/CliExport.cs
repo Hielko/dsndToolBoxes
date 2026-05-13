@@ -7,7 +7,7 @@ namespace Dsnd.CLI
         public static void DoExportToWavs(string[] args, GetOptions argOptions)
         {
             DirectoryInfo exportRootDirectory;
-            if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var str))
+            if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var str) && str != null)
             {
                 exportRootDirectory = new DirectoryInfo(str);
             }
@@ -49,11 +49,7 @@ namespace Dsnd.CLI
             {
                 var fi = new FileInfo(filename);
 
-                if (!fi.Exists)
-                {
-                    Console.WriteLine($"{filename} does not exists.");
-                }
-                else
+                if (fi.Exists)
                 {
                     if (fi?.Extension.ToLower() == ".dsnd")
                     {
@@ -66,6 +62,11 @@ namespace Dsnd.CLI
                         new ExportRiff().ExportSamples(exportSamplesDirectory, dsndSound);
                     }
                 }
+                else
+                {
+                    Console.WriteLine($"{filename} does not exists.");
+                }
+
             });
         }
     }
