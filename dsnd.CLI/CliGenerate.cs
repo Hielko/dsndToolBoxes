@@ -1,6 +1,5 @@
 ﻿using Dsnd.Core.Riff;
 
-
 namespace Dsnd.CLI
 {
     /// <summary>
@@ -8,22 +7,27 @@ namespace Dsnd.CLI
     /// </summary>
     internal class CliGenerate
     {
-        static string[]? SplitDir(string? name)
+        private static string[]? SplitDir(string? name)
         {
-            string[] split = name?.Split(Path.DirectorySeparatorChar);
+            var split = name?.Split(Path.DirectorySeparatorChar);
             return split;
         }
 
-        static string? FindRootOfSamples(FileInfo fileInfo)
+        private static string? FindRootOfSamples(FileInfo fileInfo)
         {
             var directoryParts = SplitDir(fileInfo.DirectoryName);
             string? dirWithOutWavs = null;
 
+            if (directoryParts == null || directoryParts.Length == 0)
+            {
+                return null;
+            }
+
             for (int i = directoryParts.Length; i > 1; i--)
             {
                 var p = string.Join(Path.DirectorySeparatorChar, directoryParts.Take(i));
-                var haswavs = Directory.EnumerateFiles(p, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
-                if (!haswavs.Any())
+                var hasWaveFiles = Directory.EnumerateFiles(p, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
+                if (!hasWaveFiles.Any())
                 {
                     dirWithOutWavs = p;
                     break;
@@ -33,12 +37,12 @@ namespace Dsnd.CLI
             return dirWithOutWavs;
         }
 
-        static bool TryParseZoneInfo(string directoryName, out int zoneNr, out string zoneName)
+        private static bool TryParseZoneInfo(string directoryName, out int zoneNr, out string zoneName)
         {
             zoneNr = -1;
             zoneName = string.Empty;
-
             var p = directoryName.IndexOf("_");
+
             if (p >= 0)
             {
                 var i = p - 1;
@@ -47,7 +51,6 @@ namespace Dsnd.CLI
                 string num = directoryName.Substring(i, p - i);
                 if (!int.TryParse(num, out zoneNr))
                 {
-                    Console.WriteLine($"Can't read zone number from {directoryName}");
                     return false;
                 }
                 zoneName = directoryName.Substring(p + 1);
@@ -56,73 +59,79 @@ namespace Dsnd.CLI
             return false;
         }
 
-
         public static void DoGenerateDsnd(string[] args, GetOptions argOptions)
         {
             DirectoryInfo? importDirectory = null;
             DirectoryInfo? exportDirectory = null;
 
-            if (argOptions.TryGetValue(CliOptions.GenerateTag_g, out var str))
+            if (argOptions.TryGetValue(CliOptions.GenerateTag_g, out var importDirectoryStr) && importDirectoryStr != null)
             {
-                importDirectory = new DirectoryInfo(str);
+                importDirectory = new DirectoryInfo(importDirectoryStr);
             }
             else
             {
                 throw new Exception($"Directory not specified after {CliOptions.GenerateTag_g}");
             }
-            if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportPathTag))
+
+            if (argOptions.TryGetValue(CliOptions.ExportPathTag_p, out var exportPathTag) && exportPathTag != null)
             {
                 exportDirectory = new DirectoryInfo(exportPathTag);
             }
 
-            var files = Directory.EnumerateFiles(importDirectory.FullName, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
-            var fileinfos = files.Select(f => new FileInfo(f)).ToList();
+            var allFiles = Directory.EnumerateFiles(importDirectory.FullName, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
+            var fileinfos = allFiles.Select(f => new FileInfo(f)).ToList();
             var lookups = fileinfos.ToLookup(fi => FindRootOfSamples(fi));
 
             foreach (var lu in lookups)
             {
                 var rootDir = lu.Key;
-                string dsndName = rootDir.Substring(rootDir.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                if (rootDir == null)
+                {
+                    break;
+                }
+
+                var dsndName = rootDir.Substring(rootDir.LastIndexOf(Path.DirectorySeparatorChar) + 1);
                 var directories = Directory.EnumerateDirectories(rootDir, "*", new EnumerationOptions { ReturnSpecialDirectories = false, RecurseSubdirectories = true });
 
                 if (directories.Any())
                 {
                     var dsndSound = new NewDsnd(dsndName);
-                    int zoneNr = 1;
+                    int zoneCount = 1;
 
                     foreach (var directory in directories)
                     {
-                        string velocityFilename = Path.Combine(directory, Dsnd.Core.Constants.Velocities.VelocitiesMapFilename);
-                        VelocityMap velocityMap = new(velocityFilename);
+                        var velocityFilename = Path.Combine(directory, Dsnd.Core.Constants.Velocities.VelocitiesMapFilename);
+                        var velocityMap = new VelocityMap(velocityFilename);
+                        var lastPartDirectory = directory.Substring(directory.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
-                        string lastPartDirectory = directory.Substring(directory.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-
-                        if (!TryParseZoneInfo(lastPartDirectory, out zoneNr, out var zoneName))
+                        if (!TryParseZoneInfo(lastPartDirectory, out zoneCount, out var zoneName))
                         {
                             zoneName = lastPartDirectory;
-                            zoneNr++;
+                            zoneCount++;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Can't read zone number from {lastPartDirectory}");
                         }
 
-                        var zone = dsndSound.AddZone(zoneName, zoneNr);
-                        files = Directory.EnumerateFiles(directory, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
-                        foreach (var f in files)
+                        var zone = dsndSound.AddZone(zoneName, zoneCount);
+                        var waveFiles = Directory.EnumerateFiles(directory, "*.wav", new EnumerationOptions { RecurseSubdirectories = false });
+                        foreach (var f in waveFiles)
                         {
                             var fi = new FileInfo(f);
                             var velocity = velocityMap.FindVelocity(fi) ?? throw new Exception($"Can't find velocity for {fi.FullName} in {velocityFilename}");
                             velocity += 152; // Add 152 to convert from 0-127 to 152-279 range used in dsnd files
                             dsndSound.AddLayer(zone, fi, velocity);
                         }
-
                     }
 
-                    string dsndDirectory = exportDirectory != null ? exportDirectory.FullName : rootDir;
+                    var dsndDirectory = exportDirectory != null ? exportDirectory.FullName : rootDir;
                     Directory.CreateDirectory(dsndDirectory);
 
-                    var dsndFilename = $"{dsndDirectory}{Path.DirectorySeparatorChar}{dsndName}.dsnd";
-                    Console.WriteLine($"Writing {dsndFilename}");
-                    dsndSound.Save(new FileInfo(dsndFilename));
+                    var dsndPathAndFilename = $"{dsndDirectory}{Path.DirectorySeparatorChar}{dsndName}.dsnd";
+                    Console.WriteLine($"Writing {dsndPathAndFilename}");
+                    dsndSound.Save(new FileInfo(dsndPathAndFilename));
                 }
-
             }
         }
     }

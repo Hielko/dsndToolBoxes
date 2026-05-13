@@ -1,13 +1,8 @@
 ﻿namespace Dsnd.CLI
 {
-    public class GetOptions
+    public class GetOptions(string[] pargs)
     {
-        readonly string[] args;
-
-        public GetOptions(string[] args)
-        {
-            this.args = args;
-        }
+        readonly string[] args = pargs;
 
         public string? FindTag(string tag) => args.FirstOrDefault(x => x == tag);
 
